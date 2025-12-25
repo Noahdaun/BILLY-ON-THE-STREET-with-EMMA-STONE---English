@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> BILLY ON THE STREET with EMMA STONE!!! - English </title>
+  <style>
+    body { margin:0; font-family:sans-serif; background:#f5f8fa; color:#232340; }
+    .container {
+      max-width: 440px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      transition: all .2s;
+      min-height: 100vh;
+      background: #f5f8fa;
+    }
+    .container.horizontal {
+      max-width: 100vw;
+      margin: 0;
+      flex-direction: row;
+      min-height: 100vh;
+      height: 100vh;
+      background: #f5f8fa;
+    }
+    .left-panel {
+  width: 40%;
+  min-width: 320px;
+  background: #f5f8fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: 100vh;
+  z-index: 100;
+}
+
+    .right-panel {
+      width: 60%;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+      border-left: 2px solid #dbeafe;
+      min-height: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 0;
+    }
+    #fixed-top-group, #fixed-top-group-vert {
+      width: 100%;
+      background: #f5f8fa;
+      box-shadow: 0 4px 16px #d5dae533;
+      border-radius: 0 0 18px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding-bottom: 12px;
+    }
+    #player, #player-vert {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: none;
+      border-radius: 18px 18px 0 0;
+      background: #000;
+      box-shadow: 0 2px 10px #cdd4e7;
+      display: block;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    #fixed-controls, #fixed-controls-vert {
+      width: 100%;
+      background: #f5f8fa;
+      border-radius: 0 0 18px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding-bottom: 4px;
+    }
+    #progress, #progress-vert {
+      margin:12px 18px 8px 18px;
+      font-size:17px;
+      font-weight:500;
+      text-align:right;
+    }
+    #controls, #controls-vert {
+      display:flex;
+      gap:10px;
+      margin:0 18px 10px 18px;
+      align-items:center;
+      justify-content:center;
+    }
+    #controls button, #controls-vert button {
+      font-size:15px; padding:7px 14px; border-radius:10px; border:none;
+      background:#dbeafe; color:#232340; cursor:pointer;
+      transition: .13s;
+      white-space: nowrap;
+    }
+    #controls button.active, #controls-vert button.active { background:#232340; color:#fff; }
+    #mode-btn, #layout-btn, #mode-btn-vert, #layout-btn-vert {
+      font-size:14px; padding:6px 12px; border-radius:9px; border:none;
+      background:#fed7aa; color:#c2410c; cursor:pointer; margin-left:8px;
+      white-space: nowrap;
+    }
+    #mode-btn.active, #layout-btn.active, #mode-btn-vert.active, #layout-btn-vert.active { background:#c2410c; color:#fff;}
+    #subs-vert {
+      display:flex; flex-direction:column; gap:12px;
+      padding:0 0 24px 0;
+      width: 100%;
+      align-items: center;
+      flex: 1;
+      overflow-y: auto;
+      max-height: calc(100vh - 330px);
+      min-height: 0;
+    }
+    #subs {
+      display:flex; flex-direction:column; gap:12px;
+      padding:0 0 24px 0;
+      width: 100%;
+      align-items: stretch;
+    }
+    .sub-row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-width: 100vw;
+      min-width: 0;
+      gap: 10px;
+      box-sizing: border-box;
+      margin: 0 auto;
+      transition: outline 0.15s, box-shadow 0.15s;
+    }
+    .sub-row.active {
+      outline: 3px solid #3b82f6 !important;
+      border-radius: 16px;
+      box-shadow: 0 0 0 2px #93c5fd66;
+      z-index: 1;
+    }
+    .sub-btn {
+      flex: 1 1 0%;
+      min-width: 0;
+      max-width: 100%;
+      font-size: 18px;
+      padding: 16px;
+      border-radius: 14px;
+      border: none;
+      background: #e0e7ff;
+      color: #232340;
+      text-align: left;
+      transition: .13s;
+      white-space: normal;
+      line-height: 1.3;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      box-sizing: border-box;
+    }
+    .hide-btn, .check-btn {
+      flex-shrink: 0;
+      min-width: 44px;
+      max-width: 44px;
+      height: 44px;
+      font-size: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    .container.horizontal .sub-btn {
+      font-size: 30px;
+      padding: 18px 32px;
+    }
+    .container.horizontal .hide-btn,
+    .container.horizontal .check-btn {
+      font-size: 30px;
+      min-width: 52px;
+      max-width: 52px;
+      height: 52px;
+    }
+    .sub-btn:active { background:#a5b4fc; }
+    .sub-btn.learned { background:#a7f3d0; color:#157348; text-decoration:line-through; }
+    .hide-btn.active { color:#3b3b3b; }
+    .check-btn.checked { color:#22c55e; }
+    #vertical-root {
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f5f8fa;
+      height: 100vh;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    #fixed-top-group-vert {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #f5f8fa;
+    }
+    @media (max-width: 900px) {
+      .container.horizontal .left-panel, .container.horizontal .right-panel { width: 100%; min-width:0;}
+      .container.horizontal { flex-direction: column; }
+    }
+    @media (max-width: 520px) {
+      .container, .container.horizontal { flex-direction: column !important; max-width: 100vw !important; }
+      .left-panel, .right-panel { width: 100% !important; min-width:0;}
+      #fixed-top-group, #fixed-top-group-vert { border-radius:0 0 14px 14px; }
+      #player, #player-vert { border-radius:0;}
+      #fixed-controls, #fixed-controls-vert { border-radius:0 0 14px 14px;}
+      .sub-btn { font-size:15px; padding:12px;}
+      #progress, #progress-vert { font-size:14px;}
+      #vertical-root { max-width: 100vw; }
+      .sub-row { max-width: 100vw; }
+      .sub-btn { max-width: 98vw; }
+      .container.horizontal .sub-btn { font-size: 18px; }
+      .container.horizontal .hide-btn, .container.horizontal .check-btn { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container" id="container">
+  <!-- 가로모드(좌우) 패널 -->
+  <div class="left-panel" id="left-panel" style="display:none">
+    <div id="fixed-top-group">
+      <iframe id="player" src="https://www.youtube.com/embed/FhP2wuMVPPE?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <div id="fixed-controls">
+        <div id="progress"></div>
+        <div id="controls">
+          <button id="show-all" class="active">전체 보기</button>
+          <button id="show-learned">외웠음 보기</button>
+          <button id="mode-btn" class="active">한줄 재생</button>
+          <button id="layout-btn" title="세로모드로 전환">세로모드</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="right-panel" id="right-panel" style="display:none">
+    <div id="subs"></div>
+  </div>
+  <!-- 세로모드 패널 -->
+  <div id="vertical-root">
+    <div id="fixed-top-group-vert">
+      <iframe id="player-vert" src="https://www.youtube.com/embed/FhP2wuMVPPE?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <div id="fixed-controls-vert">
+        <div id="progress-vert"></div>
+        <div id="controls-vert">
+          <button id="show-all-vert" class="active">전체 보기</button>
+          <button id="show-learned-vert">외웠음 보기</button>
+          <button id="mode-btn-vert" class="active">한줄 재생</button>
+          <button id="layout-btn-vert" title="가로모드로 전환">가로모드</button>
+        </div>
+      </div>
+    </div>
+    <div id="subs-vert"></div>
+  </div>
+</div>
+<script>
+const SUBS = [
+  { start: 101.89, end: 104.04, text: "So, the first time I saw La La Land--" },
+  { start: 104.04, end: 105.21, text: "How many times did you see it?" },
+  { start: 105.36, end: 106.99, text: "I ended up seeing it five times." },
+  { start: 106.99, end: 107.68, text: "In the theater?" },
+  { start: 107.73, end: 108.15, text: "Wow!" },
+  { start: 108.57, end: 110.67, text: "No, no, in the theater, only three times." },
+  { start: 110.67, end: 111.63, text: "Only three?" },
+  { start: 111.99, end: 112.58, text: "Had things to do" },
+  { start: 113.22, end: 116.65, text: "The first time, I actually, started being bored." },
+  { start: 117.10, end: 118.96, text: "Then I walked out of it at the end." },
+  { start: 119.02, end: 120.48, text: "And I said this is no good." },
+  { start: 121.06, end: 122.57, text: "It'll never win The Academy Award." },
+  { start: 123.08, end: 123.97, text: "Well, you were right!" },
+  { start: 123.97, end: 126.74, text: "I happened, then I happened to see it again." },
+  { start: 126.82, end: 128.76, text: "Oh, what made you go a second time if you hated it?" },
+  { start: 128.36, end: 129.53, text: "And I said this is no good." },
+  { start: 129.53, end: 130.63, text: "A friend of mine hadn't seen it." },
+  { start: 130.63, end: 131.28, text: "Loved it." },
+  { start: 131.53, end: 133.53, text: "And then, I ended up seeing it four more times." },
+  { start: 133.53, end: 134.55, text: "Four more times!" },
+  { start: 134.56, end: 137.68, text: "I think you and your co-star were absolutely brilliant." },
+  { start: 137.69, end: 139.25, text: "You know, she's not on Instagram." },
+  { start: 139.25, end: 141.78, text: "Well, it doesn't matter. She's a movie actress. That's what counts." },
+  { start: 141.78, end: 143.86, text: "No, no, no! Brie Larson's on there!" },
+  { start: 144.28, end: 146.50, text: "How many times did you have to see Room?!" },
+  { start: 146.50, end: 147.73, text: "Miss, it's Emma Stone." },
+  { start: 147.91, end: 149.38, text: "Hey, what's up?" },
+  { start: 149.59, end: 150.36, text: "There she is!" },
+  { start: 151.22, end: 153.36, text: "Lovely to, I'm so sticky from working out." },
+  { start: 153.75, end: 154.38, text: "Kind of gross." },
+  { start: 154.38, end: 155.54, text: "Works out? Wow!" },
+  { start: 156.82, end: 158.24, text: "not bad for an old bag." },
+  { start: 158.24, end: 159.08, text: "You look great!" },
+  { start: 159.38, end: 160.97, text: "And do you like Emma Stone's work?" },
+  { start: 160.97, end: 161.86, text: "So much." },
+  { start: 161.86, end: 163.34, text: "Would you like to see her try horror movies?" },
+  { start: 163.34, end: 164.54, text: "Everyone's doing it." },
+  { start: 164.54, end: 165.81, text: "not so much." },
+  { start: 165.81, end: 166.27, text: "Why?" },
+  { start: 166.27, end: 167.72, text: "Because I think honestly," },
+  { start: 167.72, end: 171.26, text: "your intellect and your whole persona is a little bit above that." },
+  { start: 171.26, end: 173.42, text: "Oh! Well, tell that to Emily Blunt!" },
+  { start: 173.42, end: 176.05, text: "Miss, we'll be dead before Emma Stone makes a boomerang." },
+  { start: 176.05, end: 177.01, text: "Hey, girl!" },
+  { start: 178.96, end: 181.96, text: "Listen to me now, imagine having the resources to make a boomerang" },
+  { start: 181.96, end: 183.20, text: "and then choosing not to." },
+  { start: 183.73, end: 184.70, text: "You don't have an Instagram?" },
+  { start: 184.70, end: 185.80, text: "Exactly!" },
+  { start: 185.80, end: 186.46, text: "Why not?" },
+  { start: 186.46, end: 187.25, text: "Exactly!" },
+  { start: 187.25, end: 189.41, text: "How do you keep in touch with the latest thing?" },
+  { start: 189.79, end: 191.94, text: "How do you keep in touch with all the latest things?" },
+  { start: 192.89, end: 194.43, text: "She's out of it! She's lost." },
+  { start: 194.43, end: 196.05, text: "Why? Come on!" },
+  { start: 196.30, end: 197.68, text: "Tell her why she should join Instagram." },
+  { start: 197.68, end: 200.18, text: "Because everything and everyone is on there." },
+  { start: 200.52, end: 201.99, text: "Will Smith just made an Instagram." },
+  { start: 201.99, end: 203.26, text: "Even Will Smith!" },
+  { start: 203.83, end: 205.47, text: "Who are you to deny us?!" }
+];
+
+
+
+
+
+const STORAGE_KEY = 'subStatus_asianfood_yt';
+let status = {};
+let mode = 'vertical'; // vertical | horizontal
+let playingSubIdx = null;
+let pausedSubIdx = null;
+let paused = false;
+let playMode = 'single';
+let timeoutId, player, playerVert, currentView = 'all';
+
+// 추가: 마지막 클릭 자막 index
+let selectedSubIdx = null;
+
+function loadStatus() {
+  try {
+    status = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    for (let i=0; i<SUBS.length; i++) {
+      if (!status[i]) status[i]={hide:false,learned:false};
+    }
+  } catch { status = {}; }
+}
+function saveStatus() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(status));
+}
+
+function renderSubs(view='all', mode='vertical') {
+  const subsDiv = (mode==='vertical') ? document.getElementById('subs-vert') : document.getElementById('subs');
+  subsDiv.innerHTML = '';
+  let learned = 0;
+  SUBS.forEach((sub, idx) => {
+    if (view==='learned' && !status[idx].learned) return;
+    if (status[idx].learned) learned++;
+    const row = document.createElement('div');
+    row.className = 'sub-row';
+    if (idx === selectedSubIdx) row.className += ' active';
+    const btn = document.createElement('button');
+    btn.className = 'sub-btn' + (status[idx].learned ? ' learned':'');
+    btn.innerText = status[idx].hide ? '🙈' : sub.text;
+    btn.onclick = () => playPauseOrRestartSub(idx, mode);
+    const hideBtn = document.createElement('button');
+    hideBtn.className = 'hide-btn' + (status[idx].hide ? ' active' : '');
+    hideBtn.innerText = '🙈';
+    hideBtn.title = status[idx].hide ? '자막 보이기' : '자막 숨기기';
+    hideBtn.onclick = (e) => {
+      status[idx].hide = !status[idx].hide;
+      saveStatus(); renderSubs(currentView, mode);
+      e.stopPropagation();
+    };
+    const checkBtn = document.createElement('button');
+    checkBtn.className = 'check-btn' + (status[idx].learned ? ' checked':'');
+    checkBtn.innerText = '✔️';
+    checkBtn.title = status[idx].learned ? '외웠음 해제' : '외웠음';
+    checkBtn.onclick = (e) => {
+      status[idx].learned = !status[idx].learned;
+      saveStatus(); renderSubs(currentView, mode);
+      e.stopPropagation();
+    };
+    row.appendChild(btn);
+    row.appendChild(hideBtn);
+    row.appendChild(checkBtn);
+    subsDiv.appendChild(row);
+  });
+  let percent = SUBS.length ? Math.round(learned/SUBS.length*100) : 0;
+  const prog = (mode==='vertical') ? document.getElementById('progress-vert') : document.getElementById('progress');
+  if (prog) prog.innerHTML =
+    `진행률: <b>${percent}%</b> (${learned}/${SUBS.length})`;
+}
+
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player');
+  playerVert = new YT.Player('player-vert');
+}
+window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+
+// 클릭한 자막 줄만 테두리 남기고, 재생이 끝나도 유지
+function playPauseOrRestartSub(idx, mode='vertical') {
+  selectedSubIdx = idx;
+  renderSubs(currentView, mode);
+  const curPlayer = (mode === 'vertical') ? playerVert : player;
+  if (!curPlayer || !curPlayer.seekTo) return;
+  const state = curPlayer.getPlayerState();
+  if (playingSubIdx !== idx) {
+    playSubByMode(idx, mode);
+    playingSubIdx = idx;
+    pausedSubIdx = null;
+    paused = false;
+    return;
+  }
+  if (state === 1) {
+    curPlayer.pauseVideo();
+    if (timeoutId) clearTimeout(timeoutId);
+    paused = true;
+    pausedSubIdx = idx;
+    playingSubIdx = null;
+    return;
+  }
+  if (state === 2 && paused && pausedSubIdx === idx) {
+    playSubByMode(idx, mode);
+    playingSubIdx = idx;
+    paused = false;
+    pausedSubIdx = null;
+    return;
+  }
+  playSubByMode(idx, mode);
+  playingSubIdx = idx;
+  paused = false;
+  pausedSubIdx = null;
+}
+function playSubByMode(idx, mode='vertical') {
+  const curPlayer = (mode === 'vertical') ? playerVert : player;
+  let start = SUBS[idx].start;
+  let end;
+  if (playMode === 'single') {
+    end = SUBS[idx].end;
+  } else {
+    end = (SUBS[idx+1] ? SUBS[idx+1].end : SUBS[idx].end);
+  }
+  curPlayer.seekTo(start, true);
+  curPlayer.playVideo();
+  if (timeoutId) clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    curPlayer.pauseVideo();
+    playingSubIdx = null;
+    paused = false;
+    pausedSubIdx = null;
+    // 재생 종료 시에도 selectedSubIdx는 그대로, outline 유지!
+  }, (end - start) * 1000);
+}
+function setLayout(newMode) {
+  mode = newMode;
+  const cont = document.getElementById('container');
+  if (mode === 'horizontal') {
+    cont.classList.add('horizontal');
+    document.getElementById('left-panel').style.display = '';
+    document.getElementById('right-panel').style.display = '';
+    document.getElementById('vertical-root').style.display = 'none';
+    renderSubs(currentView, 'horizontal');
+  } else {
+    cont.classList.remove('horizontal');
+    document.getElementById('left-panel').style.display = 'none';
+    document.getElementById('right-panel').style.display = 'none';
+    document.getElementById('vertical-root').style.display = '';
+    renderSubs(currentView, 'vertical');
+  }
+}
+function setHandlers() {
+  // 세로모드
+  document.getElementById('show-all-vert').onclick = function() {
+    currentView='all';
+    this.classList.add('active');
+    document.getElementById('show-learned-vert').classList.remove('active');
+    renderSubs('all', 'vertical');
+  };
+  document.getElementById('show-learned-vert').onclick = function() {
+    currentView='learned';
+    this.classList.add('active');
+    document.getElementById('show-all-vert').classList.remove('active');
+    renderSubs('learned', 'vertical');
+  };
+  document.getElementById('mode-btn-vert').onclick = function() {
+    if (playMode === 'single') {
+      playMode = 'next';
+      this.textContent = '다음줄까지 재생';
+      this.classList.add('active');
+    } else {
+      playMode = 'single';
+      this.textContent = '한줄 재생';
+      this.classList.remove('active');
+    }
+  };
+  document.getElementById('layout-btn-vert').onclick = function() {
+    setLayout('horizontal');
+  };
+  // 가로모드
+  document.getElementById('show-all').onclick = function() {
+    currentView='all';
+    this.classList.add('active');
+    document.getElementById('show-learned').classList.remove('active');
+    renderSubs('all', 'horizontal');
+  };
+  document.getElementById('show-learned').onclick = function() {
+    currentView='learned';
+    this.classList.add('active');
+    document.getElementById('show-all').classList.remove('active');
+    renderSubs('learned', 'horizontal');
+  };
+  document.getElementById('mode-btn').onclick = function() {
+    if (playMode === 'single') {
+      playMode = 'next';
+      this.textContent = '다음줄까지 재생';
+      this.classList.add('active');
+    } else {
+      playMode = 'single';
+      this.textContent = '한줄 재생';
+      this.classList.remove('active');
+    }
+  };
+  document.getElementById('layout-btn').onclick = function() {
+    setLayout('vertical');
+  };
+}
+window.onload = function() {
+  loadStatus();
+  setHandlers();
+  setLayout('vertical'); // 기본 세로모드
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.body.appendChild(tag);
+};
+</script>
+</body>
+</html>
