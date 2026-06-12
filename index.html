@@ -1,542 +1,615 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> BILLY ON THE STREET with EMMA STONE!!! - English </title>
-  <style>
-    body { margin:0; font-family:sans-serif; background:#f5f8fa; color:#232340; }
-    .container {
-      max-width: 440px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      transition: all .2s;
-      min-height: 100vh;
-      background: #f5f8fa;
-    }
-    .container.horizontal {
-      max-width: 100vw;
-      margin: 0;
-      flex-direction: row;
-      min-height: 100vh;
-      height: 100vh;
-      background: #f5f8fa;
-    }
-    .left-panel {
-  width: 40%;
-  min-width: 320px;
-  background: #f5f8fa;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  position: sticky;
-  top: 0;
-  align-self: flex-start;
-  height: 100vh;
-  z-index: 100;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Speaking Gym – Billy on the street 2</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1e2d4a;--blue:#3b82f6;--blue-light:#dbeafe;--blue-soft:#eff6ff;
+  --beige:#f5f0ea;--beige-mid:#e8e0d4;
+  --green:#10b981;--green-light:#d1fae5;--green-dark:#065f46;
+  --orange:#f97316;--orange-light:#ffedd5;
+  --g100:#f1f5f9;--g200:#e2e8f0;--g400:#94a3b8;--g600:#475569;
+  --card:#fff;--bg:#f7f8fa;--fs:15px;--hfs:19px;
 }
-
-    .right-panel {
-      width: 60%;
-      background: #f9fafb;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-      border-left: 2px solid #dbeafe;
-      min-height: 0;
-      height: 100vh;
-      overflow-y: auto;
-      padding: 0;
-    }
-    #fixed-top-group, #fixed-top-group-vert {
-      width: 100%;
-      background: #f5f8fa;
-      box-shadow: 0 4px 16px #d5dae533;
-      border-radius: 0 0 18px 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      padding-bottom: 12px;
-    }
-    #player, #player-vert {
-      width: 100%;
-      aspect-ratio: 16/9;
-      border: none;
-      border-radius: 18px 18px 0 0;
-      background: #000;
-      box-shadow: 0 2px 10px #cdd4e7;
-      display: block;
-      max-width: 640px;
-      margin: 0 auto;
-    }
-    #fixed-controls, #fixed-controls-vert {
-      width: 100%;
-      background: #f5f8fa;
-      border-radius: 0 0 18px 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      padding-bottom: 4px;
-    }
-    #progress, #progress-vert {
-      margin:12px 18px 8px 18px;
-      font-size:17px;
-      font-weight:500;
-      text-align:right;
-    }
-    #controls, #controls-vert {
-      display:flex;
-      gap:10px;
-      margin:0 18px 10px 18px;
-      align-items:center;
-      justify-content:center;
-    }
-    #controls button, #controls-vert button {
-      font-size:15px; padding:7px 14px; border-radius:10px; border:none;
-      background:#dbeafe; color:#232340; cursor:pointer;
-      transition: .13s;
-      white-space: nowrap;
-    }
-    #controls button.active, #controls-vert button.active { background:#232340; color:#fff; }
-    #mode-btn, #layout-btn, #mode-btn-vert, #layout-btn-vert {
-      font-size:14px; padding:6px 12px; border-radius:9px; border:none;
-      background:#fed7aa; color:#c2410c; cursor:pointer; margin-left:8px;
-      white-space: nowrap;
-    }
-    #mode-btn.active, #layout-btn.active, #mode-btn-vert.active, #layout-btn-vert.active { background:#c2410c; color:#fff;}
-    #subs-vert {
-      display:flex; flex-direction:column; gap:12px;
-      padding:0 0 24px 0;
-      width: 100%;
-      align-items: center;
-      flex: 1;
-      overflow-y: auto;
-      max-height: calc(100vh - 330px);
-      min-height: 0;
-    }
-    #subs {
-      display:flex; flex-direction:column; gap:12px;
-      padding:0 0 24px 0;
-      width: 100%;
-      align-items: stretch;
-    }
-    .sub-row {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      max-width: 100vw;
-      min-width: 0;
-      gap: 10px;
-      box-sizing: border-box;
-      margin: 0 auto;
-      transition: outline 0.15s, box-shadow 0.15s;
-    }
-    .sub-row.active {
-      outline: 3px solid #3b82f6 !important;
-      border-radius: 16px;
-      box-shadow: 0 0 0 2px #93c5fd66;
-      z-index: 1;
-    }
-    .sub-btn {
-      flex: 1 1 0%;
-      min-width: 0;
-      max-width: 100%;
-      font-size: 18px;
-      padding: 16px;
-      border-radius: 14px;
-      border: none;
-      background: #e0e7ff;
-      color: #232340;
-      text-align: left;
-      transition: .13s;
-      white-space: normal;
-      line-height: 1.3;
-      word-break: break-word;
-      overflow-wrap: break-word;
-      box-sizing: border-box;
-    }
-    .hide-btn, .check-btn {
-      flex-shrink: 0;
-      min-width: 44px;
-      max-width: 44px;
-      height: 44px;
-      font-size: 24px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-    }
-    .container.horizontal .sub-btn {
-      font-size: 30px;
-      padding: 18px 32px;
-    }
-    .container.horizontal .hide-btn,
-    .container.horizontal .check-btn {
-      font-size: 30px;
-      min-width: 52px;
-      max-width: 52px;
-      height: 52px;
-    }
-    .sub-btn:active { background:#a5b4fc; }
-    .sub-btn.learned { background:#a7f3d0; color:#157348; text-decoration:line-through; }
-    .hide-btn.active { color:#3b3b3b; }
-    .check-btn.checked { color:#22c55e; }
-    #vertical-root {
-      width: 100%;
-      max-width: 440px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: #f5f8fa;
-      height: 100vh;
-      min-height: 100vh;
-      overflow: hidden;
-    }
-    #fixed-top-group-vert {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: #f5f8fa;
-    }
-    @media (max-width: 900px) {
-      .container.horizontal .left-panel, .container.horizontal .right-panel { width: 100%; min-width:0;}
-      .container.horizontal { flex-direction: column; }
-    }
-    @media (max-width: 520px) {
-      .container, .container.horizontal { flex-direction: column !important; max-width: 100vw !important; }
-      .left-panel, .right-panel { width: 100% !important; min-width:0;}
-      #fixed-top-group, #fixed-top-group-vert { border-radius:0 0 14px 14px; }
-      #player, #player-vert { border-radius:0;}
-      #fixed-controls, #fixed-controls-vert { border-radius:0 0 14px 14px;}
-      .sub-btn { font-size:15px; padding:12px;}
-      #progress, #progress-vert { font-size:14px;}
-      #vertical-root { max-width: 100vw; }
-      .sub-row { max-width: 100vw; }
-      .sub-btn { max-width: 98vw; }
-      .container.horizontal .sub-btn { font-size: 18px; }
-      .container.horizontal .hide-btn, .container.horizontal .check-btn { font-size: 18px; }
-    }
-  </style>
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--navy);}
+.hdr{background:var(--navy);color:#fff;padding:9px 16px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-l{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;}
+.hdot{width:7px;height:7px;border-radius:50%;background:var(--blue);}
+.hdr-r{font-size:11px;opacity:.4;}
+.tabs{display:flex;background:var(--g100);border-radius:9px;padding:3px;gap:3px;width:100%;}
+.tab{flex:1;padding:6px 0;border:none;background:transparent;border-radius:7px;font-size:13px;font-weight:500;color:var(--g600);cursor:pointer;transition:.13s;}
+.tab.on{background:var(--card);color:var(--navy);box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.btns{display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%;}
+.btn{display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:8px;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:.13s;white-space:nowrap;}
+.btn.mode{background:var(--orange-light);color:var(--orange);}
+.btn.mode.on{background:var(--orange);color:#fff;}
+.btn.tr{background:var(--green-light);color:var(--green-dark);}
+.btn.tr.on{background:var(--green-dark);color:#fff;}
+.btn.lay{background:var(--navy);color:#fff;margin-left:auto;}
+.btn.view{background:var(--g100);color:var(--g600);border:1px solid var(--g200);}
+.btn.view.on{background:var(--blue);color:#fff;border-color:var(--blue);}
+.btn.fnt{background:var(--blue-light);color:var(--blue);}
+.fpwrap{position:relative;}
+.fpop{display:none;position:absolute;bottom:calc(100% + 8px);left:0;background:var(--card);border:1px solid var(--g200);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:10px;gap:7px;z-index:500;white-space:nowrap;flex-direction:column;}
+.fpop.open{display:flex;}
+.fplbl{font-size:11px;color:var(--g400);font-weight:600;letter-spacing:.05em;}
+.fprow{display:flex;gap:6px;}
+.fpo{padding:6px 12px;border-radius:7px;border:1.5px solid var(--g200);background:var(--g100);font-weight:600;cursor:pointer;transition:.12s;color:var(--navy);font-size:13px;}
+.fpo:hover{border-color:var(--blue);color:var(--blue);}
+.fpo.on{background:var(--blue);color:#fff;border-color:var(--blue);}
+.prog-wrap{display:flex;align-items:center;gap:10px;width:100%;}
+.prog-circle{position:relative;width:46px;height:46px;flex-shrink:0;}
+.prog-circle svg{transform:rotate(-90deg);}
+.pbg{fill:none;stroke:var(--g200);stroke-width:4;}
+.pfg{fill:none;stroke:var(--blue);stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .5s;}
+.pnum{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--blue);}
+.prog-info{flex:1;}
+.prog-lbl{font-size:11px;color:var(--g400);}
+.prog-cnt{font-size:12px;font-weight:600;color:var(--navy);margin-top:1px;}
+.prog-bar{height:4px;background:var(--g200);border-radius:99px;overflow:hidden;margin-top:4px;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),#818cf8);border-radius:99px;transition:width .5s;}
+#vert{display:block;}
+#vert.off{display:none;}
+.vert-top{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--card);box-shadow:0 2px 10px rgba(0,0,0,.08);border-radius:0 0 18px 18px;}
+.vert-top iframe{width:100%;height:200px;border:none;display:block;}
+.vert-ctrl{padding:10px 12px 14px;display:flex;flex-direction:column;gap:8px;}
+.sub-list{padding:8px 10px 30px;display:flex;flex-direction:column;gap:7px;}
+.sc{background:var(--card);border-radius:13px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;}
+.sc.playing{animation:cpulse 1.4s ease-in-out infinite;}
+@keyframes cpulse{0%,100%{box-shadow:0 0 0 2.5px var(--blue),0 4px 14px rgba(59,130,246,.15);}50%{box-shadow:0 0 0 4px var(--blue),0 6px 18px rgba(59,130,246,.3);}}
+.sc.sel .spa{outline:2px solid var(--blue);outline-offset:1px;}
+.sc.done{background:#f0fdf4;}
+.sc-in{display:flex;align-items:stretch;}
+.spa{flex:1;padding:11px 13px;cursor:pointer;text-align:left;background:transparent;border:none;line-height:1.45;word-break:break-word;}
+.eng{display:block;font-size:var(--fs);font-weight:500;color:var(--navy);}
+.sc.done .eng{color:var(--green-dark);text-decoration:line-through;}
+.kwrap{overflow:hidden;max-height:0;transition:max-height .25s,margin-top .2s;}
+.kwrap.open{max-height:60px;margin-top:5px;}
+.kt{font-size:calc(var(--fs) - 3px);color:var(--g600);font-style:italic;display:block;padding-top:5px;border-top:1px solid var(--blue-light);}
+.sc.done .kt{color:var(--green);border-top-color:#bbf7d0;}
+.sacts{display:flex;flex-direction:column;border-left:1px solid var(--g100);flex-shrink:0;}
+.sa{flex:1;width:42px;border:none;background:transparent;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .12s;}
+.sa:hover{background:var(--g100);}
+.sa.chk{color:var(--green);}
+.sa.hid{background:var(--g100);}
+.sa:first-child{border-bottom:1px solid var(--g100);}
+#horiz{display:none;}
+#horiz.on{display:flex;flex-direction:row;height:calc(100vh - 38px);}
+.h-left{width:40%;min-width:300px;max-width:480px;flex-shrink:0;background:var(--beige);border-right:1px solid var(--beige-mid);display:flex;flex-direction:column;overflow:hidden;}
+.h-title{padding:14px 18px 12px;background:var(--card);border-bottom:1px solid var(--beige-mid);flex-shrink:0;}
+.h-eye{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
+.h-main{font-size:19px;font-weight:800;color:var(--navy);line-height:1.2;}
+.h-sub{font-size:12px;color:var(--g400);margin-top:3px;}
+.h-vid{flex:1;min-height:0;display:flex;align-items:center;padding:14px 16px;}
+.h-vid iframe{width:100%;aspect-ratio:16/9;border:none;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.h-now{margin:0 16px;background:var(--card);border:1.5px solid var(--blue-light);border-radius:12px;padding:12px 14px;flex-shrink:0;}
+.h-now-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);}
+.h-now-txt{font-size:17px;font-weight:700;color:var(--navy);line-height:1.3;margin-top:4px;}
+.h-now-txt.idle{color:var(--g400);font-size:13px;font-style:italic;font-weight:400;}
+.h-now-kor{font-size:13px;color:var(--g400);font-style:italic;margin-top:3px;}
+.h-ctrl{flex-shrink:0;padding:12px 16px 14px;background:var(--card);border-top:1px solid var(--beige-mid);display:flex;flex-direction:column;gap:8px;}
+.h-prog{display:flex;align-items:center;gap:10px;}
+.h-prog-bg{flex:1;height:5px;background:var(--g200);border-radius:99px;overflow:hidden;}
+.h-prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),#818cf8);border-radius:99px;transition:width .5s;}
+.h-prog-txt{font-size:12px;color:var(--g400);white-space:nowrap;}
+.h-btns{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+.hb{display:flex;align-items:center;gap:5px;padding:8px 14px;border-radius:9px;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:.13s;white-space:nowrap;}
+.hb.mode{background:var(--orange-light);color:var(--orange);}
+.hb.mode.on{background:var(--orange);color:#fff;}
+.hb.tr{background:var(--green-light);color:var(--green-dark);}
+.hb.tr.on{background:var(--green-dark);color:#fff;}
+.hb.view{background:var(--g100);color:var(--g600);border:1px solid var(--g200);}
+.hb.view.on{background:var(--blue);color:#fff;border-color:var(--blue);}
+.hb.lay{background:var(--navy);color:#fff;margin-left:auto;}
+.hb.fnt{background:var(--blue-light);color:var(--blue);}
+.h-right{flex:1;min-width:0;padding:10px 12px 24px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;}
+.hrow{display:flex;align-items:center;gap:7px;border-radius:13px;}
+.hrow.playing{animation:cpulse 1.4s ease-in-out infinite;}
+.hrow.sel .hsb{outline:2.5px solid var(--blue);outline-offset:1px;}
+.hsb{flex:1;min-width:0;padding:12px 15px;border-radius:13px;border:none;background:var(--card);text-align:left;cursor:pointer;transition:background .13s;line-height:1.45;word-break:break-word;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.hsb:hover{background:var(--blue-soft);}
+.hsb.done{background:#f0fdf4;}
+.h-eng{display:block;font-size:var(--hfs);font-weight:600;color:var(--navy);}
+.hsb.done .h-eng{color:var(--green-dark);text-decoration:line-through;}
+.hkwrap{overflow:hidden;max-height:0;transition:max-height .25s,margin-top .2s;}
+.hkwrap.open{max-height:60px;margin-top:5px;}
+.hkt{font-size:calc(var(--hfs) - 5px);color:var(--g400);font-style:italic;display:block;padding-top:5px;border-top:1px solid var(--blue-light);}
+.hsb.done .hkt{color:var(--green);border-top-color:#bbf7d0;}
+.hacts{display:flex;flex-direction:column;gap:5px;flex-shrink:0;}
+.ha{width:42px;height:42px;border:1px solid var(--g200);background:var(--card);border-radius:9px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:.12s;}
+.ha:hover{background:var(--blue-soft);}
+.ha.chk{color:var(--green);}
+.ha.hid{background:var(--g100);}
+</style>
 </head>
 <body>
-<div class="container" id="container">
-  <!-- 가로모드(좌우) 패널 -->
-  <div class="left-panel" id="left-panel" style="display:none">
-    <div id="fixed-top-group">
-      <iframe id="player" src="https://www.youtube.com/embed/FhP2wuMVPPE?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-      <div id="fixed-controls">
-        <div id="progress"></div>
-        <div id="controls">
-          <button id="show-all" class="active">전체 보기</button>
-          <button id="show-learned">외웠음 보기</button>
-          <button id="mode-btn" class="active">한줄 재생</button>
-          <button id="layout-btn" title="세로모드로 전환">세로모드</button>
+<div class="hdr">
+  <div class="hdr-l"><div class="hdot"></div>Speaking Gym <span style="opacity:.45;font-weight:400;font-size:12px">with Noah</span></div>
+  <div class="hdr-r">Billy on the street 2 · Emma Stone</div>
+</div>
+<div id="vert">
+  <div class="vert-top">
+    <iframe id="pv" src="https://www.youtube.com/embed/FhP2wuMVPPE?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <div class="vert-ctrl">
+      <div class="prog-wrap">
+        <div class="prog-circle">
+          <svg width="46" height="46" viewBox="0 0 46 46">
+            <circle class="pbg" cx="23" cy="23" r="19"/>
+            <circle class="pfg" id="pfg" cx="23" cy="23" r="19" stroke-dasharray="119.38" stroke-dashoffset="119.38"/>
+          </svg>
+          <div class="pnum" id="ppct">0%</div>
         </div>
+        <div class="prog-info">
+          <div class="prog-lbl">학습 진행률</div>
+          <div class="prog-cnt" id="pcnt">0 / 59 문장</div>
+          <div class="prog-bar"><div class="prog-fill" id="pbar" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="tabs">
+        <button class="tab on" id="v-all">전체 보기</button>
+        <button class="tab" id="v-done">✔ 외웠음만</button>
+      </div>
+      <div class="btns">
+        <button class="btn mode" id="v-mode">▶ 한줄</button>
+        <button class="btn tr" id="v-tr">🇰🇷 번역</button>
+        <div class="fpwrap">
+          <button class="btn fnt" id="v-fnt">가 글자크기</button>
+          <div class="fpop" id="fpop">
+            <div class="fplbl">글자 크기</div>
+            <div class="fprow">
+              <button class="fpo" data-s="13">작게</button>
+              <button class="fpo on" data-s="15">보통</button>
+              <button class="fpo" data-s="18">크게</button>
+              <button class="fpo" data-s="21">아주 크게</button>
+            </div>
+          </div>
+        </div>
+        <button class="btn lay" id="v-lay">🖥 수업 모드</button>
       </div>
     </div>
   </div>
-  <div class="right-panel" id="right-panel" style="display:none">
-    <div id="subs"></div>
-  </div>
-  <!-- 세로모드 패널 -->
-  <div id="vertical-root">
-    <div id="fixed-top-group-vert">
-      <iframe id="player-vert" src="https://www.youtube.com/embed/FhP2wuMVPPE?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-      <div id="fixed-controls-vert">
-        <div id="progress-vert"></div>
-        <div id="controls-vert">
-          <button id="show-all-vert" class="active">전체 보기</button>
-          <button id="show-learned-vert">외웠음 보기</button>
-          <button id="mode-btn-vert" class="active">한줄 재생</button>
-          <button id="layout-btn-vert" title="가로모드로 전환">가로모드</button>
+  <div class="sub-list" id="sv"></div>
+</div>
+<div id="horiz">
+  <div class="h-left">
+    <div class="h-title">
+      <div class="h-eye">Speaking Gym with Noah</div>
+      <div class="h-main">Billy on the street 2</div>
+      <div class="h-sub">Emma Stone</div>
+    </div>
+    <div class="h-vid">
+      <iframe id="ph" src="https://www.youtube.com/embed/FhP2wuMVPPE?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <div class="h-ctrl">
+      <div class="h-prog">
+        <div class="h-prog-bg"><div class="h-prog-fill" id="hpbar" style="width:0%"></div></div>
+        <div class="h-prog-txt" id="hptxt">0%</div>
+      </div>
+      <div class="h-btns">
+        <button class="hb mode" id="h-mode">▶ 한줄</button>
+        <button class="hb tr" id="h-tr">🇰🇷 번역</button>
+        <div class="fpwrap">
+          <button class="hb fnt" id="h-fnt">가 글자</button>
+          <div class="fpop" id="h-fpop">
+            <div class="fplbl">글자 크기</div>
+            <div class="fprow">
+              <button class="h-fpo fpo" data-s="15">작게</button>
+              <button class="h-fpo fpo on" data-s="19">보통</button>
+              <button class="h-fpo fpo" data-s="23">크게</button>
+              <button class="h-fpo fpo" data-s="27">아주 크게</button>
+            </div>
+          </div>
         </div>
+        <button class="hb view on" id="h-all">전체</button>
+        <button class="hb view" id="h-done">✔ 외웨음</button>
+        <button class="hb lay" id="h-lay">📱 학생 모드</button>
       </div>
     </div>
-    <div id="subs-vert"></div>
   </div>
+  <div class="h-right" id="sh"></div>
 </div>
 <script>
-const SUBS = [
-  { start: 101.89, end: 104.04, text: "So, the first time I saw La La Land--" },
-  { start: 104.04, end: 105.21, text: "How many times did you see it?" },
-  { start: 105.36, end: 106.99, text: "I ended up seeing it five times." },
-  { start: 106.99, end: 107.68, text: "In the theater?" },
-  { start: 107.73, end: 108.15, text: "Wow!" },
-  { start: 108.57, end: 110.67, text: "No, no, in the theater, only three times." },
-  { start: 110.67, end: 111.63, text: "Only three?" },
-  { start: 111.99, end: 112.58, text: "Had things to do" },
-  { start: 113.22, end: 116.65, text: "The first time, I actually, started being bored." },
-  { start: 117.10, end: 118.96, text: "Then I walked out of it at the end." },
-  { start: 119.02, end: 120.48, text: "And I said this is no good." },
-  { start: 121.06, end: 122.57, text: "It'll never win The Academy Award." },
-  { start: 123.08, end: 123.97, text: "Well, you were right!" },
-  { start: 123.97, end: 126.74, text: "I happened, then I happened to see it again." },
-  { start: 126.82, end: 128.76, text: "Oh, what made you go a second time if you hated it?" },
-  { start: 128.36, end: 129.53, text: "And I said this is no good." },
-  { start: 129.53, end: 130.63, text: "A friend of mine hadn't seen it." },
-  { start: 130.63, end: 131.28, text: "Loved it." },
-  { start: 131.53, end: 133.53, text: "And then, I ended up seeing it four more times." },
-  { start: 133.53, end: 134.55, text: "Four more times!" },
-  { start: 134.56, end: 137.68, text: "I think you and your co-star were absolutely brilliant." },
-  { start: 137.69, end: 139.25, text: "You know, she's not on Instagram." },
-  { start: 139.25, end: 141.78, text: "Well, it doesn't matter. She's a movie actress. That's what counts." },
-  { start: 141.78, end: 143.86, text: "No, no, no! Brie Larson's on there!" },
-  { start: 144.28, end: 146.50, text: "How many times did you have to see Room?!" },
-  { start: 146.50, end: 147.73, text: "Miss, it's Emma Stone." },
-  { start: 147.91, end: 149.38, text: "Hey, what's up?" },
-  { start: 149.59, end: 150.36, text: "There she is!" },
-  { start: 151.22, end: 153.36, text: "Lovely to, I'm so sticky from working out." },
-  { start: 153.75, end: 154.38, text: "Kind of gross." },
-  { start: 154.38, end: 155.54, text: "Works out? Wow!" },
-  { start: 156.82, end: 158.24, text: "not bad for an old bag." },
-  { start: 158.24, end: 159.08, text: "You look great!" },
-  { start: 159.38, end: 160.97, text: "And do you like Emma Stone's work?" },
-  { start: 160.97, end: 161.86, text: "So much." },
-  { start: 161.86, end: 163.34, text: "Would you like to see her try horror movies?" },
-  { start: 163.34, end: 164.54, text: "Everyone's doing it." },
-  { start: 164.54, end: 165.81, text: "not so much." },
-  { start: 165.81, end: 166.27, text: "Why?" },
-  { start: 166.27, end: 167.72, text: "Because I think honestly," },
-  { start: 167.72, end: 171.26, text: "your intellect and your whole persona is a little bit above that." },
-  { start: 171.26, end: 173.42, text: "Oh! Well, tell that to Emily Blunt!" },
-  { start: 173.42, end: 176.05, text: "Miss, we'll be dead before Emma Stone makes a boomerang." },
-  { start: 176.05, end: 177.01, text: "Hey, girl!" },
-  { start: 178.96, end: 181.96, text: "Listen to me now, imagine having the resources to make a boomerang" },
-  { start: 181.96, end: 183.20, text: "and then choosing not to." },
-  { start: 183.73, end: 184.70, text: "You don't have an Instagram?" },
-  { start: 184.70, end: 185.80, text: "Exactly!" },
-  { start: 185.80, end: 186.46, text: "Why not?" },
-  { start: 186.46, end: 187.25, text: "Exactly!" },
-  { start: 187.25, end: 189.41, text: "How do you keep in touch with the latest thing?" },
-  { start: 189.79, end: 191.94, text: "How do you keep in touch with all the latest things?" },
-  { start: 192.89, end: 194.43, text: "She's out of it! She's lost." },
-  { start: 194.43, end: 196.05, text: "Why? Come on!" },
-  { start: 196.30, end: 197.68, text: "Tell her why she should join Instagram." },
-  { start: 197.68, end: 200.18, text: "Because everything and everyone is on there." },
-  { start: 200.52, end: 201.99, text: "Will Smith just made an Instagram." },
-  { start: 201.99, end: 203.26, text: "Even Will Smith!" },
-  { start: 203.83, end: 205.47, text: "Who are you to deny us?!" }
+const SUBS=[
+  {
+    "start": 101.89,
+    "end": 104.04,
+    "text": "So, the first time I saw La La Land--",
+    "kor": "그래서, 라라랜드를 처음 봤을 때--"
+  },
+  {
+    "start": 104.04,
+    "end": 105.21,
+    "text": "How many times did you see it?",
+    "kor": "몇 번이나 보셨어요?"
+  },
+  {
+    "start": 105.36,
+    "end": 106.99,
+    "text": "I ended up seeing it five times.",
+    "kor": "결국 다섯 번 봤어요."
+  },
+  {
+    "start": 106.99,
+    "end": 107.68,
+    "text": "In the theater?",
+    "kor": "영화관에서요?"
+  },
+  {
+    "start": 107.73,
+    "end": 108.15,
+    "text": "Wow!",
+    "kor": "와!"
+  },
+  {
+    "start": 108.57,
+    "end": 110.67,
+    "text": "No, no, in the theater, only three times.",
+    "kor": "아니, 아니, 영화관에서는 세 번만요."
+  },
+  {
+    "start": 110.67,
+    "end": 111.63,
+    "text": "Only three?",
+    "kor": "세 번밖에요?"
+  },
+  {
+    "start": 111.99,
+    "end": 112.58,
+    "text": "Had things to do",
+    "kor": "할 일이 있어서요."
+  },
+  {
+    "start": 113.22,
+    "end": 116.65,
+    "text": "The first time, I actually, started being bored.",
+    "kor": "처음 봤을 때는, 사실 좀 지루해지기 시작했어요."
+  },
+  {
+    "start": 117.1,
+    "end": 118.96,
+    "text": "Then I walked out of it at the end.",
+    "kor": "그래서 끝에 그냥 나와버렸어요."
+  },
+  {
+    "start": 119.02,
+    "end": 120.48,
+    "text": "And I said this is no good.",
+    "kor": "그리고 별로다 싶었죠."
+  },
+  {
+    "start": 121.06,
+    "end": 122.57,
+    "text": "It'll never win The Academy Award.",
+    "kor": "아카데미상은 절대 못 받을 거라고요."
+  },
+  {
+    "start": 123.08,
+    "end": 123.97,
+    "text": "Well, you were right!",
+    "kor": "맞는 말이었네요!"
+  },
+  {
+    "start": 123.97,
+    "end": 126.74,
+    "text": "I happened, then I happened to see it again.",
+    "kor": "그러다가 우연히 다시 보게 됐어요."
+  },
+  {
+    "start": 126.82,
+    "end": 128.76,
+    "text": "Oh, what made you go a second time if you hated it?",
+    "kor": "싫었는데 왜 다시 보러 갔어요?"
+  },
+  {
+    "start": 128.36,
+    "end": 129.53,
+    "text": "And I said this is no good.",
+    "kor": "별로다 싶었는데도요."
+  },
+  {
+    "start": 129.53,
+    "end": 130.63,
+    "text": "A friend of mine hadn't seen it.",
+    "kor": "친구가 아직 안 봤다고 해서요."
+  },
+  {
+    "start": 130.63,
+    "end": 131.28,
+    "text": "Loved it.",
+    "kor": "너무 좋아하더라고요."
+  },
+  {
+    "start": 131.53,
+    "end": 133.53,
+    "text": "And then, I ended up seeing it four more times.",
+    "kor": "그래서 결국 네 번 더 보게 됐어요."
+  },
+  {
+    "start": 133.53,
+    "end": 134.55,
+    "text": "Four more times!",
+    "kor": "네 번 더라니!"
+  },
+  {
+    "start": 134.56,
+    "end": 137.68,
+    "text": "I think you and your co-star were absolutely brilliant.",
+    "kor": "당신이랑 상대 배우 정말 훌륭했어요."
+  },
+  {
+    "start": 137.69,
+    "end": 139.25,
+    "text": "You know, she's not on Instagram.",
+    "kor": "그분은 인스타그램 안 하잖아요."
+  },
+  {
+    "start": 139.25,
+    "end": 141.78,
+    "text": "Well, it doesn't matter. She's a movie actress. That's what counts.",
+    "kor": "뭐, 상관없죠. 영화배우잖아요. 그게 중요한 거죠."
+  },
+  {
+    "start": 141.78,
+    "end": 143.86,
+    "text": "No, no, no! Brie Larson's on there!",
+    "kor": "아니, 아니, 아니! 브리 라슨도 인스타그램 하잖아요!"
+  },
+  {
+    "start": 144.28,
+    "end": 146.5,
+    "text": "How many times did you have to see Room?!",
+    "kor": "<룸>은 몇 번이나 봐야 했어요?!"
+  },
+  {
+    "start": 146.5,
+    "end": 147.73,
+    "text": "Miss, it's Emma Stone.",
+    "kor": "저기요, 엠마 스톤이에요."
+  },
+  {
+    "start": 147.91,
+    "end": 149.38,
+    "text": "Hey, what's up?",
+    "kor": "안녕하세요, 잘 지내요?"
+  },
+  {
+    "start": 149.59,
+    "end": 150.36,
+    "text": "There she is!",
+    "kor": "저기 있다!"
+  },
+  {
+    "start": 151.22,
+    "end": 153.36,
+    "text": "Lovely to, I'm so sticky from working out.",
+    "kor": "반갑네요, 저 운동해서 너무 끈적해요."
+  },
+  {
+    "start": 153.75,
+    "end": 154.38,
+    "text": "Kind of gross.",
+    "kor": "좀 찝찝하죠."
+  },
+  {
+    "start": 154.38,
+    "end": 155.54,
+    "text": "Works out? Wow!",
+    "kor": "운동을 하세요? 와!"
+  },
+  {
+    "start": 156.82,
+    "end": 158.24,
+    "text": "not bad for an old bag.",
+    "kor": "할머니치곤 나쁘지 않죠."
+  },
+  {
+    "start": 158.24,
+    "end": 159.08,
+    "text": "You look great!",
+    "kor": "멋지세요!"
+  },
+  {
+    "start": 159.38,
+    "end": 160.97,
+    "text": "And do you like Emma Stone's work?",
+    "kor": "엠마 스톤 작품 좋아하세요?"
+  },
+  {
+    "start": 160.97,
+    "end": 161.86,
+    "text": "So much.",
+    "kor": "엄청요."
+  },
+  {
+    "start": 161.86,
+    "end": 163.34,
+    "text": "Would you like to see her try horror movies?",
+    "kor": "그분이 호러 영화도 해봤으면 좋겠어요?"
+  },
+  {
+    "start": 163.34,
+    "end": 164.54,
+    "text": "Everyone's doing it.",
+    "kor": "다들 하잖아요."
+  },
+  {
+    "start": 164.54,
+    "end": 165.81,
+    "text": "not so much.",
+    "kor": "별로 그렇진 않아요."
+  },
+  {
+    "start": 165.81,
+    "end": 166.27,
+    "text": "Why?",
+    "kor": "왜요?"
+  },
+  {
+    "start": 166.27,
+    "end": 167.72,
+    "text": "Because I think honestly,",
+    "kor": "왜냐면 솔직히,"
+  },
+  {
+    "start": 167.72,
+    "end": 171.26,
+    "text": "your intellect and your whole persona is a little bit above that.",
+    "kor": "당신의 지성이랑 이미지는 그런 거보다 좀 위에 있는 것 같아서요."
+  },
+  {
+    "start": 171.26,
+    "end": 173.42,
+    "text": "Oh! Well, tell that to Emily Blunt!",
+    "kor": "어! 그건 에밀리 블런트한테 말해줘요!"
+  },
+  {
+    "start": 173.42,
+    "end": 176.05,
+    "text": "Miss, we'll be dead before Emma Stone makes a boomerang.",
+    "kor": "저기요, 엠마 스톤이 부메랑 찍기 전에 우리 다 죽을 거예요."
+  },
+  {
+    "start": 176.05,
+    "end": 177.01,
+    "text": "Hey, girl!",
+    "kor": "안녕!"
+  },
+  {
+    "start": 178.96,
+    "end": 181.96,
+    "text": "Listen to me now, imagine having the resources to make a boomerang",
+    "kor": "들어봐요, 부메랑 찍을 수 있는 자원이 있으면서"
+  },
+  {
+    "start": 181.96,
+    "end": 183.2,
+    "text": "and then choosing not to.",
+    "kor": "그걸 안 하기로 한다는 걸 상상해봐요."
+  },
+  {
+    "start": 183.73,
+    "end": 184.7,
+    "text": "You don't have an Instagram?",
+    "kor": "인스타그램 안 해요?"
+  },
+  {
+    "start": 184.7,
+    "end": 185.8,
+    "text": "Exactly!",
+    "kor": "바로 그거예요!"
+  },
+  {
+    "start": 185.8,
+    "end": 186.46,
+    "text": "Why not?",
+    "kor": "왜 안 해요?"
+  },
+  {
+    "start": 186.46,
+    "end": 187.25,
+    "text": "Exactly!",
+    "kor": "바로 그거라고요!"
+  },
+  {
+    "start": 187.25,
+    "end": 189.41,
+    "text": "How do you keep in touch with the latest thing?",
+    "kor": "최신 트렌드는 어떻게 따라가요?"
+  },
+  {
+    "start": 189.79,
+    "end": 191.94,
+    "text": "How do you keep in touch with all the latest things?",
+    "kor": "모든 최신 것들은 어떻게 따라가요?"
+  },
+  {
+    "start": 192.89,
+    "end": 194.43,
+    "text": "She's out of it! She's lost.",
+    "kor": "시대에 뒤떨어졌네! 길을 잃었어."
+  },
+  {
+    "start": 194.43,
+    "end": 196.05,
+    "text": "Why? Come on!",
+    "kor": "왜요? 왜 이래요!"
+  },
+  {
+    "start": 196.3,
+    "end": 197.68,
+    "text": "Tell her why she should join Instagram.",
+    "kor": "왜 인스타그램을 해야 하는지 말해줘요."
+  },
+  {
+    "start": 197.68,
+    "end": 200.18,
+    "text": "Because everything and everyone is on there.",
+    "kor": "모든 것과 모든 사람이 거기 있으니까요."
+  },
+  {
+    "start": 200.52,
+    "end": 201.99,
+    "text": "Will Smith just made an Instagram.",
+    "kor": "윌 스미스도 방금 인스타그램 만들었어요."
+  },
+  {
+    "start": 201.99,
+    "end": 203.26,
+    "text": "Even Will Smith!",
+    "kor": "윌 스미스까지!"
+  },
+  {
+    "start": 203.83,
+    "end": 205.47,
+    "text": "Who are you to deny us?!",
+    "kor": "당신이 뭐라고 우릴 거부해요?!"
+  }
 ];
-
-
-
-
-
-const STORAGE_KEY = 'subStatus_asianfood_yt';
-let status = {};
-let mode = 'vertical'; // vertical | horizontal
-let playingSubIdx = null;
-let pausedSubIdx = null;
-let paused = false;
-let playMode = 'single';
-let timeoutId, player, playerVert, currentView = 'all';
-
-// 추가: 마지막 클릭 자막 index
-let selectedSubIdx = null;
-
-function loadStatus() {
-  try {
-    status = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    for (let i=0; i<SUBS.length; i++) {
-      if (!status[i]) status[i]={hide:false,learned:false};
-    }
-  } catch { status = {}; }
+const KEY='sg_'+btoa('FhP2wuMVPPE').slice(0,8);
+let st={},showKor=false,openK=new Set();
+let playing=null,paused=false,pausedIdx=null,playMode='single',tid=null;
+let pv,ph,view='all',selIdx=null,fs=15,hfs=19,layout='vert';
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY))||{};st=s.st||{};fs=s.fs||15;hfs=s.hfs||19;for(let i=0;i<SUBS.length;i++)if(!st[i])st[i]={h:false,l:false};}catch{st={};}}
+function save(){localStorage.setItem(KEY,JSON.stringify({st,fs,hfs}));}
+function applyHfs(n){
+  hfs=n;document.documentElement.style.setProperty('--hfs',n+'px');
+  document.querySelectorAll('.h-fpo').forEach(b=>b.classList.toggle('on',+b.dataset.s===n));
+  save();
 }
-function saveStatus() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(status));
+function applyFs(n){fs=n;document.documentElement.style.setProperty('--fs',n+'px');document.querySelectorAll('.fpo').forEach(b=>b.classList.toggle('on',+b.dataset.s===n));save();}
+function prog(){const ld=Object.values(st).filter(s=>s.l).length,tot=SUBS.length;const p=tot?Math.round(ld/tot*100):0,c=2*Math.PI*19;const fg=document.getElementById('pfg');if(fg)fg.style.strokeDashoffset=c*(1-p/100);const g=id=>document.getElementById(id);if(g('ppct'))g('ppct').textContent=p+'%';if(g('pcnt'))g('pcnt').textContent=ld+' / '+tot+' 문장';if(g('pbar'))g('pbar').style.width=p+'%';if(g('hpbar'))g('hpbar').style.width=p+'%';if(g('hptxt'))g('hptxt').textContent=p+'% ('+ld+'/'+tot+')';}
+function nowPlaying(idx){const t=document.getElementById('h-txt'),k=document.getElementById('h-kor');if(!t)return;if(idx===null){t.textContent='자막을 클릭해서 시작하세요';t.classList.add('idle');if(k)k.style.display='none';return;}t.textContent=SUBS[idx].text;t.classList.remove('idle');if(k){if(showKor){k.textContent=SUBS[idx].kor;k.style.display='';}else k.style.display='none';}}
+function renderV(v){view=v||view;const div=document.getElementById('sv');div.innerHTML='';SUBS.forEach((sub,i)=>{if(view==='done'&&!st[i].l)return;const card=document.createElement('div');card.className='sc'+(i===playing?' playing':'')+(i===selIdx?' sel':'')+(st[i].l?' done':'');card.dataset.i=i;const inn=document.createElement('div');inn.className='sc-in';const pb=document.createElement('button');pb.className='spa';const es=document.createElement('span');es.className='eng';es.textContent=st[i].h?'🙈':sub.text;pb.appendChild(es);const kw=document.createElement('span');kw.className='kwrap'+(openK.has(i)?' open':'');const ks=document.createElement('span');ks.className='kt';if(showKor)ks.textContent=sub.kor;kw.appendChild(ks);pb.appendChild(kw);pb.onclick=()=>{if(showKor&&!st[i].h){openK.has(i)?openK.delete(i):openK.add(i);}doPlay(i,'v');};const acts=document.createElement('div');acts.className='sacts';const hb=document.createElement('button');hb.className='sa'+(st[i].h?' hid':'');hb.textContent='🙈';hb.onclick=e=>{e.stopPropagation();st[i].h=!st[i].h;save();renderV();};const cb=document.createElement('button');cb.className='sa'+(st[i].l?' chk':'');cb.textContent='✔';cb.onclick=e=>{e.stopPropagation();st[i].l=!st[i].l;save();renderV();prog();};acts.appendChild(hb);acts.appendChild(cb);inn.appendChild(pb);inn.appendChild(acts);card.appendChild(inn);div.appendChild(card);});prog();}
+function renderH(v){view=v||view;const div=document.getElementById('sh');div.innerHTML='';SUBS.forEach((sub,i)=>{if(view==='done'&&!st[i].l)return;const row=document.createElement('div');row.className='hrow'+(i===playing?' playing':'')+(i===selIdx?' sel':'');row.dataset.i=i;const btn=document.createElement('button');btn.className='hsb'+(st[i].l?' done':'');const eng=document.createElement('span');eng.className='h-eng';eng.textContent=st[i].h?'🙈':sub.text;btn.appendChild(eng);const kw=document.createElement('span');kw.className='hkwrap'+(openK.has(i)?' open':'');const ks=document.createElement('span');ks.className='hkt';if(showKor)ks.textContent=sub.kor;kw.appendChild(ks);btn.appendChild(kw);btn.onclick=()=>{if(showKor&&!st[i].h){openK.has(i)?openK.delete(i):openK.add(i);}doPlay(i,'h');};const acts=document.createElement('div');acts.className='hacts';const hb=document.createElement('button');hb.className='ha'+(st[i].h?' hid':'');hb.textContent='🙈';hb.onclick=e=>{e.stopPropagation();st[i].h=!st[i].h;save();renderH();};const cb=document.createElement('button');cb.className='ha'+(st[i].l?' chk':'');cb.textContent='✔';cb.onclick=e=>{e.stopPropagation();st[i].l=!st[i].l;save();renderH();prog();};acts.appendChild(hb);acts.appendChild(cb);row.appendChild(btn);row.appendChild(acts);div.appendChild(row);});prog();}
+function scrollTo(i,m){
+  const id=m==='v'?'sv':'sh';
+  const container=document.getElementById(id);
+  const row=container?.querySelector('[data-i="'+i+'"]');
+  if(!row)return;
+  if(m==='h'){row.scrollIntoView({behavior:'smooth',block:'center'});return;}
+  // 학생 모드: sticky 헤더 높이 계산해서 두 번째 줄 위치에 오도록 스크롤
+  const top=document.querySelector('.vert-top');
+  const headerH=top?top.offsetHeight:0;
+  const rowTop=row.getBoundingClientRect().top+window.scrollY;
+  const offset=rowTop-headerH-8;
+  window.scrollTo({top:offset,behavior:'smooth'});
 }
-
-function renderSubs(view='all', mode='vertical') {
-  const subsDiv = (mode==='vertical') ? document.getElementById('subs-vert') : document.getElementById('subs');
-  subsDiv.innerHTML = '';
-  let learned = 0;
-  SUBS.forEach((sub, idx) => {
-    if (view==='learned' && !status[idx].learned) return;
-    if (status[idx].learned) learned++;
-    const row = document.createElement('div');
-    row.className = 'sub-row';
-    if (idx === selectedSubIdx) row.className += ' active';
-    const btn = document.createElement('button');
-    btn.className = 'sub-btn' + (status[idx].learned ? ' learned':'');
-    btn.innerText = status[idx].hide ? '🙈' : sub.text;
-    btn.onclick = () => playPauseOrRestartSub(idx, mode);
-    const hideBtn = document.createElement('button');
-    hideBtn.className = 'hide-btn' + (status[idx].hide ? ' active' : '');
-    hideBtn.innerText = '🙈';
-    hideBtn.title = status[idx].hide ? '자막 보이기' : '자막 숨기기';
-    hideBtn.onclick = (e) => {
-      status[idx].hide = !status[idx].hide;
-      saveStatus(); renderSubs(currentView, mode);
-      e.stopPropagation();
-    };
-    const checkBtn = document.createElement('button');
-    checkBtn.className = 'check-btn' + (status[idx].learned ? ' checked':'');
-    checkBtn.innerText = '✔️';
-    checkBtn.title = status[idx].learned ? '외웠음 해제' : '외웠음';
-    checkBtn.onclick = (e) => {
-      status[idx].learned = !status[idx].learned;
-      saveStatus(); renderSubs(currentView, mode);
-      e.stopPropagation();
-    };
-    row.appendChild(btn);
-    row.appendChild(hideBtn);
-    row.appendChild(checkBtn);
-    subsDiv.appendChild(row);
-  });
-  let percent = SUBS.length ? Math.round(learned/SUBS.length*100) : 0;
-  const prog = (mode==='vertical') ? document.getElementById('progress-vert') : document.getElementById('progress');
-  if (prog) prog.innerHTML =
-    `진행률: <b>${percent}%</b> (${learned}/${SUBS.length})`;
-}
-
-function onYouTubeIframeAPIReady() {
-  player = new YT.Player('player');
-  playerVert = new YT.Player('player-vert');
-}
-window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
-
-// 클릭한 자막 줄만 테두리 남기고, 재생이 끝나도 유지
-function playPauseOrRestartSub(idx, mode='vertical') {
-  selectedSubIdx = idx;
-  renderSubs(currentView, mode);
-  const curPlayer = (mode === 'vertical') ? playerVert : player;
-  if (!curPlayer || !curPlayer.seekTo) return;
-  const state = curPlayer.getPlayerState();
-  if (playingSubIdx !== idx) {
-    playSubByMode(idx, mode);
-    playingSubIdx = idx;
-    pausedSubIdx = null;
-    paused = false;
-    return;
-  }
-  if (state === 1) {
-    curPlayer.pauseVideo();
-    if (timeoutId) clearTimeout(timeoutId);
-    paused = true;
-    pausedSubIdx = idx;
-    playingSubIdx = null;
-    return;
-  }
-  if (state === 2 && paused && pausedSubIdx === idx) {
-    playSubByMode(idx, mode);
-    playingSubIdx = idx;
-    paused = false;
-    pausedSubIdx = null;
-    return;
-  }
-  playSubByMode(idx, mode);
-  playingSubIdx = idx;
-  paused = false;
-  pausedSubIdx = null;
-}
-function playSubByMode(idx, mode='vertical') {
-  const curPlayer = (mode === 'vertical') ? playerVert : player;
-  let start = SUBS[idx].start;
-  let end;
-  if (playMode === 'single') {
-    end = SUBS[idx].end;
-  } else {
-    end = (SUBS[idx+1] ? SUBS[idx+1].end : SUBS[idx].end);
-  }
-  curPlayer.seekTo(start, true);
-  curPlayer.playVideo();
-  if (timeoutId) clearTimeout(timeoutId);
-  timeoutId = setTimeout(() => {
-    curPlayer.pauseVideo();
-    playingSubIdx = null;
-    paused = false;
-    pausedSubIdx = null;
-    // 재생 종료 시에도 selectedSubIdx는 그대로, outline 유지!
-  }, (end - start) * 1000);
-}
-function setLayout(newMode) {
-  mode = newMode;
-  const cont = document.getElementById('container');
-  if (mode === 'horizontal') {
-    cont.classList.add('horizontal');
-    document.getElementById('left-panel').style.display = '';
-    document.getElementById('right-panel').style.display = '';
-    document.getElementById('vertical-root').style.display = 'none';
-    renderSubs(currentView, 'horizontal');
-  } else {
-    cont.classList.remove('horizontal');
-    document.getElementById('left-panel').style.display = 'none';
-    document.getElementById('right-panel').style.display = 'none';
-    document.getElementById('vertical-root').style.display = '';
-    renderSubs(currentView, 'vertical');
-  }
-}
-function setHandlers() {
-  // 세로모드
-  document.getElementById('show-all-vert').onclick = function() {
-    currentView='all';
-    this.classList.add('active');
-    document.getElementById('show-learned-vert').classList.remove('active');
-    renderSubs('all', 'vertical');
-  };
-  document.getElementById('show-learned-vert').onclick = function() {
-    currentView='learned';
-    this.classList.add('active');
-    document.getElementById('show-all-vert').classList.remove('active');
-    renderSubs('learned', 'vertical');
-  };
-  document.getElementById('mode-btn-vert').onclick = function() {
-    if (playMode === 'single') {
-      playMode = 'next';
-      this.textContent = '다음줄까지 재생';
-      this.classList.add('active');
-    } else {
-      playMode = 'single';
-      this.textContent = '한줄 재생';
-      this.classList.remove('active');
-    }
-  };
-  document.getElementById('layout-btn-vert').onclick = function() {
-    setLayout('horizontal');
-  };
-  // 가로모드
-  document.getElementById('show-all').onclick = function() {
-    currentView='all';
-    this.classList.add('active');
-    document.getElementById('show-learned').classList.remove('active');
-    renderSubs('all', 'horizontal');
-  };
-  document.getElementById('show-learned').onclick = function() {
-    currentView='learned';
-    this.classList.add('active');
-    document.getElementById('show-all').classList.remove('active');
-    renderSubs('learned', 'horizontal');
-  };
-  document.getElementById('mode-btn').onclick = function() {
-    if (playMode === 'single') {
-      playMode = 'next';
-      this.textContent = '다음줄까지 재생';
-      this.classList.add('active');
-    } else {
-      playMode = 'single';
-      this.textContent = '한줄 재생';
-      this.classList.remove('active');
-    }
-  };
-  document.getElementById('layout-btn').onclick = function() {
-    setLayout('vertical');
-  };
-}
-window.onload = function() {
-  loadStatus();
-  setHandlers();
-  setLayout('vertical'); // 기본 세로모드
-  const tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.body.appendChild(tag);
-};
+function doPlay(i,m){selIdx=i;const cp=m==='v'?pv:ph;const re=m==='v'?renderV:renderH;re();if(!cp?.seekTo)return;const s=cp.getPlayerState();if(playing!==i){startPlay(i,m);return;}if(s===1){cp.pauseVideo();if(tid)clearTimeout(tid);paused=true;pausedIdx=i;playing=null;re();return;}if(s===2&&paused&&pausedIdx===i){startPlay(i,m);return;}startPlay(i,m);}
+function startPlay(i,m){playing=i;paused=false;pausedIdx=null;const re=m==='v'?renderV:renderH;re();scrollTo(i,m);const cp=m==='v'?pv:ph;const s=SUBS[i].start,e=playMode==='single'?SUBS[i].end:(SUBS[i+1]?SUBS[i+1].end:SUBS[i].end);cp.seekTo(s,true);cp.playVideo();if(tid)clearTimeout(tid);tid=setTimeout(()=>{cp.pauseVideo();playing=null;re();},(e-s)*1000);}
+function toggleTr(m){showKor=!showKor;if(!showKor)openK.clear();const lbl=showKor?'🇰🇷 번역 숨기기':'🇰🇷 번역';['v-tr','h-tr'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=lbl;b.classList.toggle('on',showKor);}});layout==='vert'?renderV():renderH();}
+function setLayout(m){layout=m;document.getElementById('vert').classList.toggle('off',m==='horiz');document.getElementById('horiz').classList.toggle('on',m==='horiz');m==='horiz'?renderH():renderV();}
+function syncMode(){const lbl=playMode==='single'?'▶ 한줄':'▶▶ 다음줄';['v-mode','h-mode'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=lbl;b.classList.toggle('on',playMode==='next');}});}
+window.onYouTubeIframeAPIReady=function(){pv=new YT.Player('pv');ph=new YT.Player('ph');};
+window.onload=function(){
+  function setSubPadding(){const h=document.querySelector('.vert-top')?.offsetHeight||0;const sv=document.getElementById('sv');if(sv)sv.style.paddingTop=(h+8)+'px';}
+  setSubPadding();window.addEventListener('resize',setSubPadding);
+  load();applyFs(fs);applyHfs(hfs);document.getElementById('v-all').onclick=function(){this.classList.add('on');document.getElementById('v-done').classList.remove('on');renderV('all');};document.getElementById('v-done').onclick=function(){this.classList.add('on');document.getElementById('v-all').classList.remove('on');renderV('done');};document.getElementById('v-mode').onclick=()=>{playMode=playMode==='single'?'next':'single';syncMode();};document.getElementById('v-tr').onclick=()=>toggleTr('v');document.getElementById('v-lay').onclick=()=>setLayout('horiz');document.getElementById('v-fnt').onclick=e=>{e.stopPropagation();document.getElementById('fpop').classList.toggle('open');};document.querySelectorAll('.fpo').forEach(b=>b.onclick=e=>{e.stopPropagation();applyFs(+b.dataset.s);renderV();document.getElementById('fpop').classList.remove('open');});document.addEventListener('click',()=>{document.getElementById('fpop').classList.remove('open');document.getElementById('h-fpop')?.classList.remove('open');});document.getElementById('h-all').onclick=function(){this.classList.add('on');document.getElementById('h-done').classList.remove('on');renderH('all');};document.getElementById('h-done').onclick=function(){this.classList.add('on');document.getElementById('h-all').classList.remove('on');renderH('done');};document.getElementById('h-mode').onclick=()=>{playMode=playMode==='single'?'next':'single';syncMode();};document.getElementById('h-tr').onclick=()=>toggleTr('h');document.getElementById('h-lay').onclick=()=>setLayout('vert');
+  document.getElementById('h-fnt').onclick=e=>{e.stopPropagation();document.getElementById('h-fpop').classList.toggle('open');};
+  document.querySelectorAll('.h-fpo').forEach(b=>b.onclick=e=>{e.stopPropagation();applyHfs(+b.dataset.s);renderH();document.getElementById('h-fpop').classList.remove('open');});renderV();const tag=document.createElement('script');tag.src='https://www.youtube.com/iframe_api';document.body.appendChild(tag);};
 </script>
 </body>
 </html>
